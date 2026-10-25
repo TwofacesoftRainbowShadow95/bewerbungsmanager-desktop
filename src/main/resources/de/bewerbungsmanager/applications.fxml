@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.ListView?>
+
+<VBox alignment="CENTER" spacing="20.0"
+    xmlns="http://javafx.com/javafx/8.0.171"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="de.bewerbungsmanager.ApplicationsController">
+
+    <children>
+        <Label text="Meine Bewerbungen"></Label>
+        <TableView fx:id="applicationsTable" prefHeight="250.0">
+            <columns>
+                <TableColumn fx:id="unternehmenColumn" text="Unternehmen"></TableColumn>
+                <TableColumn fx:id="stelleColumn" text="Stelle"></TableColumn>
+                <TableColumn fx:id="statusColumn" text="Status"></TableColumn>
+                <TableColumn fx:id="erinnerungColumn" text="Erinnerung"></TableColumn>
+            </columns>
+        </TableView>
+        <Label text="Dokumente der ausgewählten Bewerbung:"></Label>
+        <ListView fx:id="dokumentenListe" prefHeight="120.0" minHeight="120.0" VBox.vgrow="ALWAYS"></ListView>
+        <Button text="Dokument hinzufügen" onAction="#dokumentHinzufuegen"></Button>
+        <Button text="Zurück zur Startseite" onAction="#backToHome"></Button>
+    </children>
+</VBox>
