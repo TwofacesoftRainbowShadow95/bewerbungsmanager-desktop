@@ -1,3 +1,17 @@
 target/
 *.class
 .vscode/
+
+# Lokale Datenbanken
+*.db 
+*.sqlite
+*.sqlite3
+
+# Persöhnliche Bewerbungsunterlagen
+bewerbungsunterlagen/
+private/
+
+# Lokale Konfigurationen und Geheimnisse
+.env
+.env.*
+!.env.example
