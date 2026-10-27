@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
 import java.io.File;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Alert;
 
 public class ApplicationsController {
 
@@ -67,6 +68,15 @@ public class ApplicationsController {
     @FXML
     private void backToHome() throws IOException {
         App.setRoot("primary");
+    }
+
+    @FXML
+    private void neueBewerbung() {
+        Alert meldung = new Alert(Alert.AlertType.INFORMATION);
+        meldung.setTitle("Neue Bewerbung");
+        meldung.setHeaderText("Bewerbung anlegen");
+        meldung.setContentText("Hier entsteht später das Formular für neue Bewerbungen");
+        meldung.showAndWait();
     }
 
     @FXML

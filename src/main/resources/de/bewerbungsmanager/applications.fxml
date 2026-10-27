@@ -24,6 +24,7 @@
         <Label text="Dokumente der ausgewählten Bewerbung:"></Label>
         <ListView fx:id="dokumentenListe" prefHeight="120.0" minHeight="120.0" VBox.vgrow="ALWAYS"></ListView>
         <Button text="Dokument hinzufügen" onAction="#dokumentHinzufuegen"></Button>
+        <Button text="Neue Bewerbung" onAction="#neueBewerbung"></Button>
         <Button text="Zurück zur Startseite" onAction="#backToHome"></Button>
     </children>
 </VBox>
