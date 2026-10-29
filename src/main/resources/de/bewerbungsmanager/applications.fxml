@@ -19,6 +19,7 @@
                 <TableColumn fx:id="stelleColumn" text="Stelle"></TableColumn>
                 <TableColumn fx:id="statusColumn" text="Status"></TableColumn>
                 <TableColumn fx:id="erinnerungColumn" text="Erinnerung"></TableColumn>
+                <TableColumn fx:id="aktionenColumn" text="" sortable="false"></TableColumn>
             </columns>
         </TableView>
         <Label text="Dokumente der ausgewählten Bewerbung:"></Label>

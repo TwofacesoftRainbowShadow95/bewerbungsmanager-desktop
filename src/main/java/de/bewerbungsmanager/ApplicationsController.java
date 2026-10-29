@@ -1,17 +1,23 @@
 package de.bewerbungsmanager;
 
-import java.util.ArrayList;
 import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import java.io.File;
 import javafx.scene.control.ListView;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 
 public class ApplicationsController {
 
@@ -33,7 +39,20 @@ public class ApplicationsController {
     @FXML
     private TableColumn<Bewerbung, Integer> erinnerungColumn;
 
+    @FXML
+    private TableColumn<Bewerbung, Void> aktionenColumn;
+
     private ObservableList<Bewerbung> bewerbungen = FXCollections.observableArrayList();
+
+    public void bewerbungHinzufuegen(Bewerbung bewerbung) {
+        bewerbungen.add(bewerbung);
+    }
+
+    private ApplicationsController applicationsController;
+
+    public void setApplicationsController(ApplicationsController controller) {
+        this.applicationsController = controller;
+    }
 
     @FXML
     private void initialize() {
@@ -51,8 +70,41 @@ public class ApplicationsController {
 
         erinnerungColumn.setCellValueFactory(new PropertyValueFactory<>("erinnerungsIntervall"));
 
+        aktionenColumn.setCellFactory(spalte -> new TableCell<Bewerbung, Void>() {
+
+            private final Button loeschenButton = new Button("X");
+
+            {
+                loeschenButton.setStyle("-fx-text-fill: red;" + "-fx-background-color: transparent;"
+                        + "-fx-font-size: 16px" + "-fx-font-weight: bold;" + "-fx-cursor: hand;");
+                loeschenButton.setOnAction(event -> {
+                    Bewerbung bewerbung = getTableView().getItems().get(getIndex());
+                    bewerbungEntfernen(bewerbung);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean leer) {
+                super.updateItem(item, leer);
+
+                if (leer || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                    return;
+                }
+
+                Bewerbung ausgewaehlteBewerbung = getTableView().getSelectionModel().getSelectedItem();
+
+                if (getTableRow().getItem() == ausgewaehlteBewerbung) {
+                    setGraphic(loeschenButton);
+                } else {
+                    setGraphic(null);
+                }
+            }
+        });
+
         applicationsTable.getSelectionModel().selectedItemProperty()
                 .addListener((observable, alteBewerbung, neueBewerbung) -> {
+                    applicationsTable.refresh();
                     dokumentenListe.getItems().clear();
                     System.out.println("Dokumentenliste verbunden: " + dokumentenListe);
                     System.out.println("Listeneinträge nach dem Leeren: " + dokumentenListe.getItems());
@@ -71,12 +123,38 @@ public class ApplicationsController {
     }
 
     @FXML
-    private void neueBewerbung() {
-        Alert meldung = new Alert(Alert.AlertType.INFORMATION);
-        meldung.setTitle("Neue Bewerbung");
-        meldung.setHeaderText("Bewerbung anlegen");
-        meldung.setContentText("Hier entsteht später das Formular für neue Bewerbungen");
-        meldung.showAndWait();
+    private void bewerbungEntfernen(Bewerbung bewerbung) {
+        Alert meldung = new Alert(AlertType.CONFIRMATION);
+
+        meldung.setTitle("Bewerbung entfernen");
+        meldung.setHeaderText("Möchtest du diese Bewerbung wirklich entfernen?");
+        meldung.setContentText("Unternehmen: " + bewerbung.getUnternehmen() + "\nstelle: " + bewerbung.getStelle());
+
+        java.util.Optional<javafx.scene.control.ButtonType> ergebnis = meldung.showAndWait();
+
+        if (ergebnis.isPresent() && ergebnis.get() == javafx.scene.control.ButtonType.OK) {
+            bewerbungen.remove(bewerbung);
+            dokumentenListe.getItems().clear();
+            applicationsTable.getSelectionModel().clearSelection();
+
+            System.out.println("Bewerbung wurde entfernt.");
+        }
+    }
+
+    @FXML
+    private void neueBewerbung() throws IOException {
+        FXMLLoader loader = new FXMLLoader(
+                App.class.getResource("new-application.fxml"));
+
+        Parent root = loader.load();
+
+        NewApplicationController controller = loader.getController();
+        controller.setApplicationsController(this);
+
+        Stage fenster = new Stage();
+        fenster.setTitle("Neue Bewerbung anlegen");
+        fenster.setScene(new Scene(root));
+        fenster.show();
     }
 
     @FXML

@@ -8,6 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx/25"
     xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="de.bewerbungsmanager.NewApplicationController"
     alignment="CENTER"
     spacing="15">
 
@@ -21,8 +22,8 @@
 
     <TextField fx:id="erinnerungsIntervallField" promptText="Erinnerungsintervall in Tagen"></TextField>
 
-    <Button text="Speichern"></Button>
+    <Button text="Speichern" onAction="#speichern"></Button>
 
-    <Button text="Abbrechen"></Button>
+    <Button text="Abbrechen" onAction="#abbrechen"></Button>
 
 </VBox>
