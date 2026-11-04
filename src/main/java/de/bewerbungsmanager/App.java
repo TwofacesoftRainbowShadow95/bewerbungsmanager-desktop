@@ -5,8 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
+import java.util.List;
 
 /**
  * JavaFX App
@@ -19,6 +19,14 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         Datenbank.verbindungTesten();
+        Datenbank.tabellenErstellen();
+
+        List<Bewerbung> bewerbungen = Datenbank.laden();
+
+        for (Bewerbung bewerbung : bewerbungen) {
+            System.out.println(bewerbung.getUnternehmen());
+            System.out.println(bewerbung.getStelle());
+        }
 
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setTitle("Mein BewerbungsManager");

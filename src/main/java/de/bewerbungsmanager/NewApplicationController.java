@@ -79,6 +79,8 @@ public class NewApplicationController {
 
         Bewerbung neueBewerbung = new Bewerbung(unternehmen, stelle, status, erinnerungsIntervall);
 
+        Datenbank.speichern(neueBewerbung);
+
         applicationsController.bewerbungHinzufuegen(neueBewerbung);
         unternehmenField.getScene().getWindow().hide();
     }
