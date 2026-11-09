@@ -89,6 +89,35 @@ public class Datenbank {
         }
     }
 
+    public static void aktualisieren(Bewerbung bewerbung) {
+        String sql = """
+                UPDATE bewerbungen
+                SET unternehmen = ?,
+                    stelle = ?,
+                    status = ?,
+                    erinnerungs_intervall = ?
+                WHERE id = ?
+                """;
+
+        try (Connection verbindung = verbinden();
+                PreparedStatement statement = verbindung.prepareStatement(sql)) {
+
+            statement.setString(1, bewerbung.getUnternehmen());
+            statement.setString(2, bewerbung.getStelle());
+            statement.setString(3, bewerbung.getStatus());
+            statement.setInt(4, bewerbung.getErinnerungsIntervall());
+            statement.setInt(5, bewerbung.getId());
+
+            statement.executeUpdate();
+
+            System.out.println("Bewerbung wurde aktualisiert!");
+
+        } catch (Exception e) {
+            System.out.println("Fehler beim Aktualisieren der Bewerbung!");
+            e.printStackTrace();
+        }
+    }
+
     public static boolean loeschen(int id) {
         String sql = "DELETE FROM bewerbungen WHERE id = ?";
 
